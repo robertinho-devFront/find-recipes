@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Les petits plats</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <h1>Les Petits Plats</h1>
+        <div class="search-container">
+          <input
+            type="text"
+            id="main-search"
+            placeholder="Recherchez des recettes, ingrédients..."
+            oninput="filterRecipes()"
+          />
+          <button type="button" onclick="filterRecipes()">🔍</button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div id="active-filters" class="active-filters">
+        <!-- Les filtres actifs apparaîtront ici -->
+      </div>
+      <div class="filters">
+        <div class="filter">
+          <label id="ingredients-filter-label" for="ingredients-filter"
+            >Ingrédients
+            <div class="arrow"></div
+          ></label>
+          <div class="dropdown hidden" id="ingredients-dropdown">
+            <input
+              type="text"
+              id="ingredients-filter-input"
+              placeholder="Rechercher..."
+            />
+            <select id="ingredients-filter" size="10"></select>
+          </div>
+        </div>
+        <div class="filter">
+          <label id="appareil-filter-label" for="appareil-filter"
+            >Appareils
+            <div class="arrow"></div>
+            <span></span
+          ></label>
+          <div class="dropdown hidden" id="appareil-dropdown">
+            <input
+              type="text"
+              id="appareil-filter-input"
+              placeholder="Rechercher..."
+            />
+            <select id="appareil-filter" size="10"></select>
+          </div>
+        </div>
+        <div class="filter">
+          <label id="ustensiles-filter-label" for="ustensiles-filter"
+            >Ustensiles
+            <div class="arrow"></div
+          ></label>
+          <div class="dropdown hidden" id="ustensiles-dropdown">
+            <input
+              type="text"
+              id="ustensiles-filter-input"
+              placeholder="Rechercher..."
+            />
+            <select id="ustensiles-filter" size="10"></select>
+          </div>
+        </div>
+      </div>
+      <div id="recipes-count">0 recettes</div>
+
+      <div id="recipes-container">
+        <!-- Les recettes seront insérées ici -->
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
