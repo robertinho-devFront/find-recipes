@@ -13,8 +13,11 @@ const Header = () => {
   return `
     <header class="header">
       <div class="header__content">
-        <h1>Les Petits Plats</h1>
+        <h1 class="title__logo">Les Petits Plats <img src="assets/img/logo.png"></h1>
+         <h2 class="subtitle__page">CHERCHEZ PARMI PLUS DE 1500 RECETTES 
+DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</h2>
         <div class="search-container">
+       
           <input
             type="text"
             id="main-search"
@@ -36,7 +39,7 @@ const Filters = () => {
         <div class="filter filter--ingredients">
           <label id="ingredients-filter-label" for="ingredients-filter">
             Ingrédients
-            <div class="filter__arrow">▼</div>
+            <div class="filter__arrow"></div>
           </label>
           <div class="filter__dropdown hidden" id="ingredients-dropdown">
             <input
@@ -51,7 +54,7 @@ const Filters = () => {
         <div class="filter filter--appareil">
           <label id="appareil-filter-label" for="appareil-filter">
             Appareils
-            <div class="filter__arrow">▼</div>
+            <div class="filter__arrow"></div>
           </label>
           <div class="filter__dropdown hidden" id="appareil-dropdown">
             <input
@@ -66,7 +69,7 @@ const Filters = () => {
         <div class="filter filter--ustensiles">
           <label id="ustensiles-filter-label" for="ustensiles-filter">
             Ustensiles
-            <div class="filter__arrow">▼</div>
+            <div class="filter__arrow"></div>
           </label>
           <div class="filter__dropdown hidden" id="ustensiles-dropdown">
             <input
@@ -137,23 +140,25 @@ const createRecipeCard = (recipe) => {
       <img src="recipe/${recipe.image}" alt="${recipe.name}" class="recipe-card__image">
       <div class="recipe-card__details">
         <h2 class="recipe-card__title">${recipe.name}</h2>
-        <p class="recipe-card__time"><strong>Temps:</strong> ${recipe.time} min</p>
-        <p class="recipe-card__description"><strong>Recette:</strong> ${recipe.description}</p>
-        <p class="recipe-card__ingredients"><strong>Ingrédients:</strong></p>
+        <p class="recipe-card__time"><strong></strong> ${recipe.time} min</p>
+        <p class="recipe-card__description"><strong>Recette</strong>    ${recipe.description}</p>
+        <p class="recipe-card__ingredients"><strong>Ingrédients</strong> </p>
         <ul class="recipe-card__list">
           ${recipe.ingredients.map(ingredient => `
             <li class="recipe-card__list-item">
               <span>${ingredient.ingredient}</span>
-              <span>${ingredient.quantity ? ingredient.quantity : ""} ${ingredient.unit ? ingredient.unit : ""}</span>
+              <span class="ingredient">${ingredient.quantity ? ingredient.quantity : ""} ${ingredient.unit ? ingredient.unit : ""}</span>
             </li>
           `).join("")}
         </ul>
-        <p class="recipe-card__appliance"><strong>Appareil:</strong> ${recipe.appliance}</p>
-        <p class="recipe-card__ustensils"><strong>Ustensiles:</strong> ${recipe.ustensils.join(", ")}</p>
+
       </div>
     </div>
   `;
 };
+
+       /* // <p class="recipe-card__appliance"><strong>Appareil:</strong> ${recipe.appliance}</p>
+        // <p class="recipe-card__ustensils"><strong>Ustensiles:</strong> ${recipe.ustensils.join(", ")}</p>*/
 
 // Fonction pour mettre à jour les options de filtre dynamiquement
 const updateFilterOptions = (recipes) => {
@@ -262,9 +267,9 @@ const toggleDropdown = (labelId, dropdownId) => {
     dropdown.classList.toggle("filter__dropdown--active");
     const arrow = label.querySelector(".filter__arrow");
     if (dropdown.classList.contains("filter__dropdown--active")) {
-      arrow.textContent = "▲";
+      arrow.classList.add("filter__arrow--up");
     } else {
-      arrow.textContent = "▼";
+      arrow.classList.remove("filter__arrow--up");
     }
   });
 };
@@ -292,8 +297,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   selectedFilters.appliances = urlParams.appliances;
 
-  urlParams.utensils.forEach(utensil => {
-    const option = document.querySelector(`#ustensiles-filter option[value="${utensil}"]`);
+  urlParams.utensils.forEach(ustensil => {
+    const option = document.querySelector(`#ustensiles-filter option[value="${ustensil}"]`);
     if (option) option.selected = true;
   });
   selectedFilters.utensils = urlParams.utensils;
