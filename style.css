@@ -10,7 +10,7 @@ header {
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
-  padding: 20px;
+  padding: 40px  60px;
   text-align: center;
   flex-direction: column;
   min-height: 666px;
@@ -34,7 +34,7 @@ header h1 {
 .search-container {
   display: flex;
   align-items: center;
-  margin: 100px auto;
+  margin: 0 auto 160px;
   max-width: 1024px;
   width: 100%;
 }
@@ -44,7 +44,7 @@ header h1 {
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  margin-right: 10px;
+  margin:   0 40px;
   width: 100%;
   max-width: 954px;
   height: 72px;
@@ -59,36 +59,62 @@ header h1 {
   cursor: pointer;
   margin-right: 8px;
 }
+ #active-filters{
+  display: flex;
+  gap: 60px;
+  max-width: 1240px;
+  justify-content: flex-start;
+  margin: 0px auto 20px;
+  width: 100%;
+ }
 
 .filters {
-  margin-top: 10px;
   display: flex;
   flex-direction: row;
-  width: 100%;
-  max-width: 61rem;
-  margin: 50px 0;
-  height: 48px;
+
 }
 
 .filter {
   width: 226px;
-  border-radius: 11px;
   background-color: #ffffff;
+  border-radius: 11px;
   display: flex;
   flex-direction: column;
-  padding: 12px 0;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 60px;
+  height: 56px;
+  justify-content: center;
+  padding: 0 16px;
 }
 
-.filters select {
+.filter__select {
   padding: 10px;
   font-size: 16px;
   border: none;
-  border-radius: 5px;
+  border-radius:  0 0 5px 5px;
   margin: 0 5px;
   outline: none;
   width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.filter__option {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.filter__option.selected {
+  background-color: #ffd15b;
+  font-weight: bolder;
+  background-image:url("assets/img/cruz.png")  ;
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  background-size: 17px;
+}
+.filter__option:hover {
+  background-color: #ffd15b;
+  transition: all ease .33s;
 }
 
 main {
@@ -106,13 +132,13 @@ main {
   border-radius: 22px;
   width: 100%;
   max-width: 380px;
-
   height: auto;
   margin: 0px;
   padding: 0px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   position: relative;
 }
+
 .recipe-card__details {
   padding: 30px 20px 20px;
 }
@@ -121,6 +147,7 @@ main {
   padding: 30px 20px;
   height: 466px;
 }
+
 .recipe-card__description {
   display: -webkit-box;
   -webkit-line-clamp: 4; /* Limite le texte à 4 lignes */
@@ -128,12 +155,14 @@ main {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .recipe-card__description strong {
   text-transform: uppercase;
   color: #7a7a7a;
   display: block;
   margin-bottom: 15px;
 }
+
 .recipe-card__ingredients strong {
   text-transform: uppercase;
   color: #7a7a7a;
@@ -183,9 +212,10 @@ main {
 .recipe-card .tags {
   margin-top: 10px;
 }
+
 .recipe-card__time {
   position: absolute;
-  top: 20px;
+  top: 0px;
   right: 20px;
   background-color: #ffd15b;
   border-radius: 14px;
@@ -204,6 +234,7 @@ main {
   margin-right: 5px;
   font-size: 12px;
 }
+
 .recipe-card__list {
   margin: 0;
   padding: 0;
@@ -211,6 +242,7 @@ main {
   flex-direction: row;
   flex-wrap: wrap;
 }
+
 .recipe-card__list-item {
   width: 50%;
   list-style: none;
@@ -218,6 +250,7 @@ main {
   flex-direction: column;
   margin-bottom: 20px;
 }
+
 .recipe-card__list-item span {
   font-family: "Manrope", sans-serif;
   font-weight: 700;
@@ -225,6 +258,7 @@ main {
   line-height: 19.12px;
   color: #1b1b1b;
 }
+
 .recipe-card__list-item .ingredient {
   font-family: "Manrope", sans-serif;
   font-weight: 400;
@@ -238,15 +272,18 @@ main {
   display: flex;
   font-family: "Anton", sans-serif;
   font-weight: 400;
+  font-size: 22px;
   font-style: normal;
 }
 
 #recipes-container {
   width: 100%;
+  max-width: 1240px;
   gap: 40px;
   display: flex;
-  justify-content: center;
+  justify-content:space-between;
   flex-wrap: wrap;
+  margin:0 auto 160px;
 }
 
 .hidden {
@@ -255,10 +292,14 @@ main {
 
 .filter label {
   cursor: pointer;
-  margin-bottom: 10px;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  font-family: "Manrope", sans-serif;
+font-weight: 500;
+font-size: 16px;
+color: black;
+background-color: white;
 }
 
 .filter__dropdown {
@@ -289,7 +330,6 @@ main {
 }
 
 #ingredients-filter {
-  max-width: 195px;
   width: 100%;
   border: none;
   margin: 10px auto;
@@ -314,10 +354,17 @@ option:hover {
   background-color: #ffd15b;
   color: black;
   padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 11px;
   display: flex;
   align-items: center;
+  height: 37px;
+  padding: 9px 16px;
+  font-weight: bolder;
+  width: 226px;
+  justify-content: space-between;
+
 }
+
 
 .active-filter button {
   background: none;
@@ -403,13 +450,13 @@ p.times-recipe {
 .search-container {
   display: flex;
   align-items: center;
-      background-color: white;
-    border-radius: 14px;
+  background-color: white;
+  border-radius: 14px;
 }
 
 .filters {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .filter__dropdown {
@@ -422,22 +469,28 @@ p.times-recipe {
 
 .filters-wrapper {
   display: flex;
-  justify-content: center;
   z-index: 2;
   position: relative;
+  justify-content: space-between;
+  max-width: 1240px;
+    width: 100%;
+    display: flex;
+    margin: 20px auto;
+    align-items: center;
+    height: 48px;
+
 }
 
-.active-filter {
-  display: block;
-  height: 37px;
-  padding: 9px 16px;
-  font-weight: bolder;
-}
+
 
 .filter__dropdown {
   background-color: #ffffff;
-  border-radius: 0 0 5px 5px;
+  width: 100%;
   padding: 0 9px;
+  position: absolute;
+  top: 44px;
+  max-width: 241px;
+
 }
 
 #ingredients-filter-input {
@@ -467,20 +520,28 @@ p.times-recipe {
 }
 
 #appareil-filter {
-  margin-top: 0;
+  width: 100%;
+  border: none;
+  margin: 10px auto;
+  padding: 0;
+  outline: none;
 }
 
 #ustensiles-filter {
-  margin-top: 0;
+  width: 100%;
+  border: none;
+  margin: 10px auto;
+  padding: 0;
+  outline: none;
 }
 
 .arrow-down,
 .arrow-up {
-  width: 0;
-  height: 0;
+  /* width: 6;
+  height: 6;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  cursor: pointer;
+  cursor: pointer; */
 }
 
 .arrow-down {
@@ -495,13 +556,16 @@ p.times-recipe {
   border: solid black;
   border-width: 0 2px 2px 0;
   display: inline-block;
-  padding: 7px;
+  padding: 3px;
   transform: rotate(45deg);
+  width: 6px;
+  height: 6px;
 }
 
 .filter__arrow--up {
   transform: rotate(-135deg);
 }
+
 .subtitle__page {
   font-weight: 400;
   font-size: 44px;
@@ -509,6 +573,9 @@ p.times-recipe {
   align-items: center;
   font-family: "Anton", sans-serif;
   color: #ffd15b;
-  margin: auto;
+  margin: 160px auto 20px;
   max-width: 708px;
+}
+.title__logo{
+  padding: 0 0 ;
 }
