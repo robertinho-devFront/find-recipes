@@ -16,8 +16,8 @@ const Header = () => {
         <h1 class="title__logo">Les Petits Plats <img src="assets/img/logo.png"></h1>
         <h2 class="subtitle__page">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h2>
         <div class="search-container">
-          <input type="text" id="main-search" class="search-container__input" placeholder="Recherchez des recettes, ingrédients..." />
-          <button type="button" id="search-button" class="search-container__button">🔍</button>
+          <input type="text" id="main-search" class="search-container__input" placeholder="Rechercher une recette, un ingrédient, ..." />
+          <button type="button" id="search-button" class="search-container__button"><img class="search-container__img" src="assets/img/loupw.png"></button>
         </div>
       </div>
     </header>
@@ -32,21 +32,21 @@ const Filters = () => {
         <div class="filter filter--ingredients">
           <label id="ingredients-filter-label" for="ingredients-filter">Ingrédients <div class="filter__arrow"></div></label>
           <div class="filter__dropdown hidden" id="ingredients-dropdown">
-            <input type="text" id="ingredients-filter-input" class="filter__input" placeholder="Rechercher..." />
+            <input type="text" id="ingredients-filter-input" class="filter__input" placeholder="" />
             <div id="ingredients-filter" class="filter__select"></div>
           </div>
         </div>
         <div class="filter filter--appareil">
           <label id="appareil-filter-label" for="appareil-filter">Appareils <div class="filter__arrow"></div></label>
           <div class="filter__dropdown hidden" id="appareil-dropdown">
-            <input type="text" id="appareil-filter-input" class="filter__input" placeholder="Rechercher..." />
+            <input type="text" id="appareil-filter-input" class="filter__input" placeholder="" />
             <div id="appareil-filter" class="filter__select"></div>
           </div>
         </div>
         <div class="filter filter--ustensiles">
           <label id="ustensiles-filter-label" for="ustensiles-filter">Ustensiles <div class="filter__arrow"></div></label>
           <div class="filter__dropdown hidden" id="ustensiles-dropdown">
-            <input type="text" id="ustensiles-filter-input" class="filter__input" placeholder="Rechercher..." />
+            <input type="text" id="ustensiles-filter-input" class="filter__input" placeholder="" />
             <div id="ustensiles-filter" class="filter__select"></div>
           </div>
         </div>
@@ -69,8 +69,8 @@ const getURLParameters = () => {
   };
 };
 
-// Fonction pour filtrer les recettes
-const filterRecipes = () => {
+// Fonction pour filtrer les recettes (recherche native)
+const filterRecipesNative = () => {
   const searchValue = document.querySelector("#main-search").value.toLowerCase();
   const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
   const utensilsSelected = Array.from(document.querySelectorAll("#ustensiles-filter .selected")).map(option => option.dataset.value.toLowerCase());
@@ -81,24 +81,81 @@ const filterRecipes = () => {
   selectedFilters.utensils = utensilsSelected;
   selectedFilters.ingredients = ingredientsSelected;
 
-  // Recherche linéaire pour le filtre principal
   const filteredRecipes = recipes.filter(recipe => {
     const matchesSearch = !searchValue || recipe.name.toLowerCase().includes(searchValue) || recipe.description.toLowerCase().includes(searchValue) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchValue));
     return matchesSearch;
   });
 
-  // Recherche binaire pour les filtres secondaires
-  const binarySearch = (arr, target) => {
-    let left = 0;
-    let right = arr.length - 1;
-    while (left <= right) {
-      const mid = Math.floor((left + right) / 2);
-      if (arr[mid] === target) return true;
-      if (arr[mid] < target) left = mid + 1;
-      else right = mid - 1;
-    }
-    return false;
-  };
+  const matchesFilters = filteredRecipes.filter(recipe => {
+    const matchesAppliances = !applianceSelected.length || applianceSelected.every(appliance => recipe.appliance.toLowerCase().includes(appliance));
+    const matchesUstensils = !utensilsSelected.length || utensilsSelected.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
+    const matchesIngredients = !ingredientsSelected.length || ingredientsSelected.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
+    return matchesAppliances && matchesUstensils && matchesIngredients;
+  });
+
+  displayRecipes(matchesFilters);
+  updateActiveFilters();
+  updateURLParameters();
+};
+
+// Fonction pour filtrer les recettes (recherche linéaire)
+const filterRecipesLinear = () => {
+  const searchValue = document.querySelector("#main-search").value.toLowerCase();
+  const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
+  const utensilsSelected = Array.from(document.querySelectorAll("#ustensiles-filter .selected")).map(option => option.dataset.value.toLowerCase());
+  const ingredientsSelected = Array.from(document.querySelectorAll("#ingredients-filter .selected")).map(option => option.dataset.value.toLowerCase());
+
+  selectedFilters.search = searchValue;
+  selectedFilters.appliances = applianceSelected;
+  selectedFilters.utensils = utensilsSelected;
+  selectedFilters.ingredients = ingredientsSelected;
+
+  const filteredRecipes = recipes.filter(recipe => {
+    const matchesSearch = !searchValue || recipe.name.toLowerCase().includes(searchValue) || recipe.description.toLowerCase().includes(searchValue) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchValue));
+    return matchesSearch;
+  });
+
+  const matchesFilters = filteredRecipes.filter(recipe => {
+    const matchesAppliances = !applianceSelected.length || applianceSelected.every(appliance => recipe.appliance.toLowerCase().split(',').includes(appliance));
+    const matchesUstensils = !utensilsSelected.length || utensilsSelected.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
+    const matchesIngredients = !ingredientsSelected.length || ingredientsSelected.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
+    return matchesAppliances && matchesUstensils && matchesIngredients;
+  });
+
+  displayRecipes(matchesFilters);
+  updateActiveFilters();
+  updateURLParameters();
+};
+
+// Fonction de recherche binaire
+const binarySearch = (arr, target) => {
+  let left = 0;
+  let right = arr.length - 1;
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) return true;
+    if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return false;
+};
+
+// Fonction pour filtrer les recettes (recherche binaire)
+const filterRecipesBinary = () => {
+  const searchValue = document.querySelector("#main-search").value.toLowerCase();
+  const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
+  const utensilsSelected = Array.from(document.querySelectorAll("#ustensiles-filter .selected")).map(option => option.dataset.value.toLowerCase());
+  const ingredientsSelected = Array.from(document.querySelectorAll("#ingredients-filter .selected")).map(option => option.dataset.value.toLowerCase());
+
+  selectedFilters.search = searchValue;
+  selectedFilters.appliances = applianceSelected;
+  selectedFilters.utensils = utensilsSelected;
+  selectedFilters.ingredients = ingredientsSelected;
+
+  const filteredRecipes = recipes.filter(recipe => {
+    const matchesSearch = !searchValue || recipe.name.toLowerCase().includes(searchValue) || recipe.description.toLowerCase().includes(searchValue) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchValue));
+    return matchesSearch;
+  });
 
   const matchesFilters = filteredRecipes.filter(recipe => {
     const sortedAppliances = recipe.appliance.toLowerCase().split(',').sort();
@@ -150,6 +207,7 @@ const createRecipeCard = (recipe) => {
 // AU cas ou <p class="recipe-card__appliance"><strong>Appareil:</strong> ${recipe.appliance}</p>
 // <p class="recipe-card__ustensils"><strong>Ustensiles:</strong> ${recipe.ustensils.join(", ")}</p>
 
+
 // Fonction pour mettre à jour les options de filtre dynamiquement
 const updateFilterOptions = (recipes) => {
   const applianceSet = new Set();
@@ -170,7 +228,7 @@ const updateFilterOptions = (recipes) => {
 // Fonction pour remplir les options de filtre
 const populateFilterOptions = (selector, items) => {
   const filterElement = document.querySelector(selector);
-  filterElement.innerHTML = ""; // Clear existing options
+  filterElement.innerHTML = ""; // Clear 
   items.forEach(item => {
     const option = document.createElement("div");
     option.classList.add("filter__option");
@@ -178,7 +236,7 @@ const populateFilterOptions = (selector, items) => {
     option.textContent = item;
     option.addEventListener('click', () => {
       option.classList.toggle('selected');
-      filterRecipes();
+      filterRecipesNative(); 
     });
     filterElement.appendChild(option);
   });
@@ -198,21 +256,25 @@ const updateActiveFilters = () => {
           filterTag.textContent = value;
 
           const removeButton = document.createElement("button");
-          removeButton.textContent = "X";
+          const img = document.createElement("img");
+          img.src = "assets/img/Vector.png"; 
+          img.alt = "Supprimer";
+          img.style.width = "12px"; 
+          removeButton.appendChild(img);
+          
           removeButton.addEventListener("click", () => {
             // Supprimer le filtre sélectionné
             selectedFilters[key] = selectedFilters[key].filter(v => v !== value);
 
             // Mettre à jour les options sélectionnées dans le dropdown
             const filterElement = document.querySelector(`#${key}-filter`);
-            Array.from(filterElement.children).forEach(option => {
-              if (option.dataset.value.toLowerCase() === value.toLowerCase()) {
-                option.classList.remove('selected');
-              }
-            });
+            const selectedOption = Array.from(filterElement.querySelectorAll('.filter__option')).find(option => option.dataset.value.toLowerCase() === value.toLowerCase());
+            if (selectedOption) {
+              selectedOption.classList.remove('selected');
+            }
 
             // Filtrer les recettes après la suppression du filtre
-            filterRecipes();
+            filterRecipesNative(); 
           });
 
           filterTag.appendChild(removeButton);
@@ -226,12 +288,17 @@ const updateActiveFilters = () => {
         filterTag.textContent = values;
 
         const removeButton = document.createElement("button");
-        removeButton.textContent = "X";
+        const img = document.createElement("img");
+        img.src = "assets/img/Vector.png"; 
+        img.alt = "Supprimer";
+        img.style.width = "12px"; 
+        removeButton.appendChild(img);
+        
         removeButton.addEventListener("click", () => {
           if (key === "search") document.querySelector("#main-search").value = "";
           selectedFilters[key] = "";
 
-          filterRecipes();
+          filterRecipesNative(); // Change this to the desired filter function
         });
 
         filterTag.appendChild(removeButton);
@@ -304,9 +371,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   selectedFilters.ingredients = urlParams.ingredients;
 
-  filterRecipes();
+  filterRecipesNative();
 
-  document.querySelector("#main-search").addEventListener("input", filterRecipes);
+
+  document.querySelector("#main-search").addEventListener("input", filterRecipesNative);
   document.querySelector("#appareil-filter-input").addEventListener("input", () => filterOptions('appareil'));
   document.querySelector("#ustensiles-filter-input").addEventListener("input", () => filterOptions('ustensiles'));
   document.querySelector("#ingredients-filter-input").addEventListener("input", () => filterOptions('ingredients'));
@@ -316,6 +384,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   toggleDropdown("#ustensiles-filter-label", "#ustensiles-dropdown");
 });
 
+// Fonction pour filtrer les options dans les dropdowns
 const filterOptions = (filterType) => {
   const input = document.querySelector(`#${filterType}-filter-input`).value.toLowerCase();
   const options = document.querySelectorAll(`#${filterType}-filter .filter__option`);

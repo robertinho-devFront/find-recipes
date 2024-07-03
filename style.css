@@ -47,12 +47,15 @@ header h1 {
   margin:   0 40px;
   width: 100%;
   max-width: 954px;
-  height: 72px;
+  height: 52px;
+  outline: none;
+  background-color: white !important;
+  color: #7A7A7A;
+  font-family: "Manrope",sans-serif;
 }
 
 .search-container button {
   padding: 10px;
-  font-size: 44px;
   background: #333;
   border: none;
   border-radius: 10px;
@@ -101,12 +104,16 @@ header h1 {
 
 .filter__option {
   padding: 10px;
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  padding-left: 21px;
   cursor: pointer;
 }
 
 .filter__option.selected {
   background-color: #ffd15b;
   font-weight: bolder;
+
   background-image:url("assets/img/cruz.png")  ;
   background-repeat: no-repeat;
   background-position: 98% 50%;
@@ -114,7 +121,7 @@ header h1 {
 }
 .filter__option:hover {
   background-color: #ffd15b;
-  transition: all ease .33s;
+  transition: background-color ease-in-out .33s;
 }
 
 main {
@@ -207,6 +214,9 @@ main {
 .recipe-card p {
   font-size: 14px;
   line-height: 1.5;
+  font-family: "Manrope", sans-serif;
+  color: #1B1B1B;
+  font-weight: 400;
 }
 
 .recipe-card .tags {
@@ -296,7 +306,7 @@ main {
   display: flex;
   justify-content: space-between;
   font-family: "Manrope", sans-serif;
-font-weight: 500;
+font-weight: 700;
 font-size: 16px;
 color: black;
 background-color: white;
@@ -453,6 +463,9 @@ p.times-recipe {
   background-color: white;
   border-radius: 14px;
 }
+.search-container__img{
+  width: 28px;
+}
 
 .filters {
   display: flex;
@@ -486,32 +499,47 @@ p.times-recipe {
 .filter__dropdown {
   background-color: #ffffff;
   width: 100%;
-  padding: 0 9px;
+  padding: 0 0px;
   position: absolute;
   top: 44px;
-  max-width: 241px;
+  max-width: 257px;
 
 }
 
 #ingredients-filter-input {
   margin-bottom: 24px;
+  margin-left: 16px;
   height: 36px;
-  width: 95%;
-  border: 1px solid #c6c6c6;
+  width: 86%;
+    border: 1px solid #c6c6c6;
+  background-image:url("assets/img/loup.png")  ;
+  background-repeat: no-repeat;
+  background-position: 96% 50%;
+  background-size: 17px;
 }
 
 #appareil-filter-input {
   margin-bottom: 24px;
+  margin-left: 16px;
   height: 36px;
-  width: 95%;
-  border: 1px solid #c6c6c6;
+  width: 86%;
+    border: 1px solid #c6c6c6;
+    background-image:url("assets/img/loup.png")  ;
+    background-repeat: no-repeat;
+    background-position: 96% 50%;
+    background-size: 17px;
 }
 
 #ustensiles-filter-input {
   margin-bottom: 24px;
+  margin-left: 16px;
   height: 36px;
-  width: 95%;
+  width: 86%;
   border: 1px solid #c6c6c6;
+  background-image:url("assets/img/loup.png")  ;
+  background-repeat: no-repeat;
+  background-position: 96% 50%;
+  background-size: 17px;
 }
 
 #ingredients-filter {
