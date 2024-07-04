@@ -10,7 +10,7 @@ header {
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
-  padding: 40px  60px;
+  padding: 40px 60px;
   text-align: center;
   flex-direction: column;
   min-height: 666px;
@@ -44,14 +44,14 @@ header h1 {
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  margin:   0 40px;
+  margin: 0 40px;
   width: 100%;
   max-width: 954px;
   height: 52px;
   outline: none;
   background-color: white !important;
   color: #7A7A7A;
-  font-family: "Manrope",sans-serif;
+  font-family: "Manrope", sans-serif;
 }
 
 .search-container button {
@@ -62,14 +62,15 @@ header h1 {
   cursor: pointer;
   margin-right: 8px;
 }
- #active-filters{
+
+#active-filters {
   display: flex;
   gap: 60px;
   max-width: 1240px;
   justify-content: flex-start;
   margin: 0px auto 20px;
   width: 100%;
- }
+}
 
 .filters {
   display: flex;
@@ -94,7 +95,7 @@ header h1 {
   padding: 10px;
   font-size: 16px;
   border: none;
-  border-radius:  0 0 5px 5px;
+  border-radius: 0 0 5px 5px;
   margin: 0 5px;
   outline: none;
   width: 100%;
@@ -114,11 +115,12 @@ header h1 {
   background-color: #ffd15b;
   font-weight: bolder;
 
-  background-image:url("assets/img/cruz.png")  ;
+  background-image: url("assets/img/cruz.png");
   background-repeat: no-repeat;
   background-position: 98% 50%;
   background-size: 17px;
 }
+
 .filter__option:hover {
   background-color: #ffd15b;
   transition: background-color ease-in-out .33s;
@@ -157,7 +159,8 @@ main {
 
 .recipe-card__description {
   display: -webkit-box;
-  -webkit-line-clamp: 4; /* Limite le texte à 4 lignes */
+  -webkit-line-clamp: 4;
+  /* Limite le texte à 4 lignes */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -291,9 +294,9 @@ main {
   max-width: 1240px;
   gap: 40px;
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   flex-wrap: wrap;
-  margin:0 auto 160px;
+  margin: 0 auto 160px;
 }
 
 .hidden {
@@ -306,10 +309,10 @@ main {
   display: flex;
   justify-content: space-between;
   font-family: "Manrope", sans-serif;
-font-weight: 700;
-font-size: 16px;
-color: black;
-background-color: white;
+  font-weight: 700;
+  font-size: 16px;
+  color: black;
+  background-color: white;
 }
 
 .filter__dropdown {
@@ -463,7 +466,8 @@ p.times-recipe {
   background-color: white;
   border-radius: 14px;
 }
-.search-container__img{
+
+.search-container__img {
   width: 28px;
 }
 
@@ -486,11 +490,11 @@ p.times-recipe {
   position: relative;
   justify-content: space-between;
   max-width: 1240px;
-    width: 100%;
-    display: flex;
-    margin: 20px auto;
-    align-items: center;
-    height: 48px;
+  width: 100%;
+  display: flex;
+  margin: 20px auto;
+  align-items: center;
+  height: 48px;
 
 }
 
@@ -511,11 +515,13 @@ p.times-recipe {
   margin-left: 16px;
   height: 36px;
   width: 86%;
-    border: 1px solid #c6c6c6;
-  background-image:url("assets/img/loup.png")  ;
+  border: 1px solid #c6c6c6;
+  background-image: url("assets/img/loup.png");
   background-repeat: no-repeat;
   background-position: 96% 50%;
   background-size: 17px;
+  color: #7A7A7A;
+  outline: none;font-size: 14px;
 }
 
 #appareil-filter-input {
@@ -523,11 +529,13 @@ p.times-recipe {
   margin-left: 16px;
   height: 36px;
   width: 86%;
-    border: 1px solid #c6c6c6;
-    background-image:url("assets/img/loup.png")  ;
-    background-repeat: no-repeat;
-    background-position: 96% 50%;
-    background-size: 17px;
+  border: 1px solid #c6c6c6;
+  background-image: url("assets/img/loup.png");
+  background-repeat: no-repeat;
+  background-position: 96% 50%;
+  background-size: 17px;
+  color: #7A7A7A;
+  outline: none;font-size: 14px;
 }
 
 #ustensiles-filter-input {
@@ -536,10 +544,12 @@ p.times-recipe {
   height: 36px;
   width: 86%;
   border: 1px solid #c6c6c6;
-  background-image:url("assets/img/loup.png")  ;
+  background-image: url("assets/img/loup.png");
   background-repeat: no-repeat;
   background-position: 96% 50%;
   background-size: 17px;
+  color: #7A7A7A;
+  outline: none;font-size: 14px;
 }
 
 #ingredients-filter {
@@ -604,6 +614,7 @@ p.times-recipe {
   margin: 160px auto 20px;
   max-width: 708px;
 }
-.title__logo{
-  padding: 0 0 ;
+
+.title__logo {
+  padding: 0 0;
 }

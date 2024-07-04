@@ -70,6 +70,7 @@ const getURLParameters = () => {
 };
 
 // Fonction pour filtrer les recettes (recherche native)
+// Test 1 - Filtrage natif
 const filterRecipesNative = () => {
   const searchValue = document.querySelector("#main-search").value.toLowerCase();
   const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
@@ -99,6 +100,8 @@ const filterRecipesNative = () => {
 };
 
 // Fonction pour filtrer les recettes (recherche linéaire)
+// Test 2 - Filtrage linéaire
+
 const filterRecipesLinear = () => {
   const searchValue = document.querySelector("#main-search").value.toLowerCase();
   const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
@@ -141,6 +144,7 @@ const binarySearch = (arr, target) => {
 };
 
 // Fonction pour filtrer les recettes (recherche binaire)
+// Test 3 - Filtrage binaire
 const filterRecipesBinary = () => {
   const searchValue = document.querySelector("#main-search").value.toLowerCase();
   const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
