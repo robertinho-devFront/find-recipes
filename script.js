@@ -80,29 +80,25 @@ const updateFilters = () => {
   selectedFilters.appliances = applianceSelected;
   selectedFilters.utensils = utensilsSelected;
   selectedFilters.ingredients = ingredientsSelected;
+  console.log("Selected Filters Updated:", selectedFilters);
 };
 
-// Fonction de filtrage des recettes
+// Fonction de filtrage natif
 const filterRecipes = () => {
   updateFilters();
-  const matchesFilters = recipes.filter(recipe => {
-    const matchesSearch = !selectedFilters.search || 
-      recipe.name.toLowerCase().includes(selectedFilters.search) || 
-      recipe.description.toLowerCase().includes(selectedFilters.search) || 
-      recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
+  const matchesFilters = [];
+  for (let recipe of recipes) {
+    const matchesSearch = !selectedFilters.search || recipe.name.toLowerCase().includes(selectedFilters.search) || recipe.description.toLowerCase().includes(selectedFilters.search) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
+    if (!matchesSearch) continue;
 
-    const matchesAppliances = !selectedFilters.appliances.length || 
-      selectedFilters.appliances.every(appliance => recipe.appliance.toLowerCase().includes(appliance));
+    const matchesAppliances = !selectedFilters.appliances.length || selectedFilters.appliances.every(appliance => recipe.appliance.toLowerCase().includes(appliance));
+    const matchesUstensils = !selectedFilters.utensils.length || selectedFilters.utensils.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
+    const matchesIngredients = !selectedFilters.ingredients.length || selectedFilters.ingredients.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
 
-    const matchesUstensils = !selectedFilters.utensils.length || 
-      selectedFilters.utensils.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
-
-    const matchesIngredients = !selectedFilters.ingredients.length || 
-      selectedFilters.ingredients.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
-
-    return matchesSearch && matchesAppliances && matchesUstensils && matchesIngredients;
-  });
-
+    if (matchesAppliances && matchesUstensils && matchesIngredients) {
+      matchesFilters.push(recipe);
+    }
+  }
   displayRecipes(matchesFilters);
   updateActiveFilters();
   updateURLParameters();
@@ -206,7 +202,7 @@ const updateActiveFilters = () => {
               }
             }
 
-            filterRecipes(); 
+            filterRecipes();
           });
 
           filterTag.appendChild(removeButton);
@@ -227,11 +223,10 @@ const updateActiveFilters = () => {
         removeButton.appendChild(img);
         
         removeButton.addEventListener("click", () => {
-          console.log("J'ai cliqué");
           if (key === "search") document.querySelector("#main-search").value = "";
           selectedFilters[key] = "";
 
-          filterRecipes(); 
+          filterRecipes();
         });
 
         filterTag.appendChild(removeButton);
@@ -239,6 +234,7 @@ const updateActiveFilters = () => {
       }
     }
   });
+  console.log("Active Filters Updated:", selectedFilters);
 };
 
 // Fonction pour mettre à jour les paramètres de l'URL en fonction des filtres
