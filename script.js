@@ -30,21 +30,21 @@ const Filters = () => {
     <div class="filters-wrapper">
       <div class="filters">
         <div class="filter filter--ingredients">
-          <label id="ingredients-filter-label" for="ingredients-filter">Ingrédients <div class="filter__arrow"></div></label>
+          <label id="ingredients-filter-label" for="ingredients-filter-input">Ingrédients <div class="filter__arrow"></div></label>
           <div class="filter__dropdown hidden" id="ingredients-dropdown">
             <input type="text" id="ingredients-filter-input" class="filter__input" placeholder="" />
             <div id="ingredients-filter" class="filter__select"></div>
           </div>
         </div>
         <div class="filter filter--appareil">
-          <label id="appareil-filter-label" for="appareil-filter">Appareils <div class="filter__arrow"></div></label>
+          <label id="appareil-filter-label" for="appareil-filter-input">Appareils <div class="filter__arrow"></div></label>
           <div class="filter__dropdown hidden" id="appareil-dropdown">
             <input type="text" id="appareil-filter-input" class="filter__input" placeholder="" />
             <div id="appareil-filter" class="filter__select"></div>
           </div>
         </div>
         <div class="filter filter--ustensiles">
-          <label id="ustensiles-filter-label" for="ustensiles-filter">Ustensiles <div class="filter__arrow"></div></label>
+          <label id="ustensiles-filter-label" for="ustensiles-filter-input">Ustensiles <div class="filter__arrow"></div></label>
           <div class="filter__dropdown hidden" id="ustensiles-dropdown">
             <input type="text" id="ustensiles-filter-input" class="filter__input" placeholder="" />
             <div id="ustensiles-filter" class="filter__select"></div>
@@ -69,9 +69,8 @@ const getURLParameters = () => {
   };
 };
 
-// Fonction pour filtrer les recettes (recherche native)
-// Test 1 - Filtrage natif
-const filterRecipesNative = () => {
+// Fonction pour mettre à jour les filtres
+const updateFilters = () => {
   const searchValue = document.querySelector("#main-search").value.toLowerCase();
   const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
   const utensilsSelected = Array.from(document.querySelectorAll("#ustensiles-filter .selected")).map(option => option.dataset.value.toLowerCase());
@@ -81,96 +80,27 @@ const filterRecipesNative = () => {
   selectedFilters.appliances = applianceSelected;
   selectedFilters.utensils = utensilsSelected;
   selectedFilters.ingredients = ingredientsSelected;
-
-  const filteredRecipes = recipes.filter(recipe => {
-    const matchesSearch = !searchValue || recipe.name.toLowerCase().includes(searchValue) || recipe.description.toLowerCase().includes(searchValue) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchValue));
-    return matchesSearch;
-  });
-
-  const matchesFilters = filteredRecipes.filter(recipe => {
-    const matchesAppliances = !applianceSelected.length || applianceSelected.every(appliance => recipe.appliance.toLowerCase().includes(appliance));
-    const matchesUstensils = !utensilsSelected.length || utensilsSelected.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
-    const matchesIngredients = !ingredientsSelected.length || ingredientsSelected.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
-    return matchesAppliances && matchesUstensils && matchesIngredients;
-  });
-
-  displayRecipes(matchesFilters);
-  updateActiveFilters();
-  updateURLParameters();
 };
 
-// Fonction pour filtrer les recettes (recherche linéaire)
-// Test 2 - Filtrage linéaire
+// Fonction de filtrage des recettes
+const filterRecipes = () => {
+  updateFilters();
+  const matchesFilters = recipes.filter(recipe => {
+    const matchesSearch = !selectedFilters.search || 
+      recipe.name.toLowerCase().includes(selectedFilters.search) || 
+      recipe.description.toLowerCase().includes(selectedFilters.search) || 
+      recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
 
-const filterRecipesLinear = () => {
-  const searchValue = document.querySelector("#main-search").value.toLowerCase();
-  const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
-  const utensilsSelected = Array.from(document.querySelectorAll("#ustensiles-filter .selected")).map(option => option.dataset.value.toLowerCase());
-  const ingredientsSelected = Array.from(document.querySelectorAll("#ingredients-filter .selected")).map(option => option.dataset.value.toLowerCase());
+    const matchesAppliances = !selectedFilters.appliances.length || 
+      selectedFilters.appliances.every(appliance => recipe.appliance.toLowerCase().includes(appliance));
 
-  selectedFilters.search = searchValue;
-  selectedFilters.appliances = applianceSelected;
-  selectedFilters.utensils = utensilsSelected;
-  selectedFilters.ingredients = ingredientsSelected;
+    const matchesUstensils = !selectedFilters.utensils.length || 
+      selectedFilters.utensils.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
 
-  const filteredRecipes = recipes.filter(recipe => {
-    const matchesSearch = !searchValue || recipe.name.toLowerCase().includes(searchValue) || recipe.description.toLowerCase().includes(searchValue) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchValue));
-    return matchesSearch;
-  });
+    const matchesIngredients = !selectedFilters.ingredients.length || 
+      selectedFilters.ingredients.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
 
-  const matchesFilters = filteredRecipes.filter(recipe => {
-    const matchesAppliances = !applianceSelected.length || applianceSelected.every(appliance => recipe.appliance.toLowerCase().split(',').includes(appliance));
-    const matchesUstensils = !utensilsSelected.length || utensilsSelected.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
-    const matchesIngredients = !ingredientsSelected.length || ingredientsSelected.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
-    return matchesAppliances && matchesUstensils && matchesIngredients;
-  });
-
-  displayRecipes(matchesFilters);
-  updateActiveFilters();
-  updateURLParameters();
-};
-
-// Fonction de recherche binaire
-const binarySearch = (arr, target) => {
-  let left = 0;
-  let right = arr.length - 1;
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-    if (arr[mid] === target) return true;
-    if (arr[mid] < target) left = mid + 1;
-    else right = mid - 1;
-  }
-  return false;
-};
-
-// Fonction pour filtrer les recettes (recherche binaire)
-// Test 3 - Filtrage binaire
-const filterRecipesBinary = () => {
-  const searchValue = document.querySelector("#main-search").value.toLowerCase();
-  const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
-  const utensilsSelected = Array.from(document.querySelectorAll("#ustensiles-filter .selected")).map(option => option.dataset.value.toLowerCase());
-  const ingredientsSelected = Array.from(document.querySelectorAll("#ingredients-filter .selected")).map(option => option.dataset.value.toLowerCase());
-
-  selectedFilters.search = searchValue;
-  selectedFilters.appliances = applianceSelected;
-  selectedFilters.utensils = utensilsSelected;
-  selectedFilters.ingredients = ingredientsSelected;
-
-  const filteredRecipes = recipes.filter(recipe => {
-    const matchesSearch = !searchValue || recipe.name.toLowerCase().includes(searchValue) || recipe.description.toLowerCase().includes(searchValue) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchValue));
-    return matchesSearch;
-  });
-
-  const matchesFilters = filteredRecipes.filter(recipe => {
-    const sortedAppliances = recipe.appliance.toLowerCase().split(',').sort();
-    const sortedUstensils = recipe.ustensils.map(u => u.toLowerCase()).sort();
-    const sortedIngredients = recipe.ingredients.map(i => i.ingredient.toLowerCase()).sort();
-
-    const matchesAppliances = !applianceSelected.length || applianceSelected.every(appliance => binarySearch(sortedAppliances, appliance));
-    const matchesUstensils = !utensilsSelected.length || utensilsSelected.every(ustensil => binarySearch(sortedUstensils, ustensil));
-    const matchesIngredients = !ingredientsSelected.length || ingredientsSelected.every(ingredient => binarySearch(sortedIngredients, ingredient));
-
-    return matchesAppliances && matchesUstensils && matchesIngredients;
+    return matchesSearch && matchesAppliances && matchesUstensils && matchesIngredients;
   });
 
   displayRecipes(matchesFilters);
@@ -208,10 +138,6 @@ const createRecipeCard = (recipe) => {
   `;
 };
 
-// AU cas ou <p class="recipe-card__appliance"><strong>Appareil:</strong> ${recipe.appliance}</p>
-// <p class="recipe-card__ustensils"><strong>Ustensiles:</strong> ${recipe.ustensils.join(", ")}</p>
-
-
 // Fonction pour mettre à jour les options de filtre dynamiquement
 const updateFilterOptions = (recipes) => {
   const applianceSet = new Set();
@@ -240,7 +166,7 @@ const populateFilterOptions = (selector, items) => {
     option.textContent = item;
     option.addEventListener('click', () => {
       option.classList.toggle('selected');
-      filterRecipesNative(); 
+      filterRecipes(); 
     });
     filterElement.appendChild(option);
   });
@@ -267,18 +193,20 @@ const updateActiveFilters = () => {
           removeButton.appendChild(img);
           
           removeButton.addEventListener("click", () => {
-            // Supprimer le filtre sélectionné
+            console.log("J'ai cliqué");
+
             selectedFilters[key] = selectedFilters[key].filter(v => v !== value);
 
             // Mettre à jour les options sélectionnées dans le dropdown
             const filterElement = document.querySelector(`#${key}-filter`);
-            const selectedOption = Array.from(filterElement.querySelectorAll('.filter__option')).find(option => option.dataset.value.toLowerCase() === value.toLowerCase());
-            if (selectedOption) {
-              selectedOption.classList.remove('selected');
+            if (filterElement) {
+              const selectedOption = Array.from(filterElement.querySelectorAll('.filter__option')).find(option => option.dataset.value.toLowerCase() === value.toLowerCase());
+              if (selectedOption) {
+                selectedOption.classList.remove('selected');
+              }
             }
 
-            // Filtrer les recettes après la suppression du filtre
-            filterRecipesNative(); 
+            filterRecipes(); 
           });
 
           filterTag.appendChild(removeButton);
@@ -299,10 +227,11 @@ const updateActiveFilters = () => {
         removeButton.appendChild(img);
         
         removeButton.addEventListener("click", () => {
+          console.log("J'ai cliqué");
           if (key === "search") document.querySelector("#main-search").value = "";
           selectedFilters[key] = "";
 
-          filterRecipesNative(); // Change this to the desired filter function
+          filterRecipes(); 
         });
 
         filterTag.appendChild(removeButton);
@@ -375,10 +304,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   selectedFilters.ingredients = urlParams.ingredients;
 
-  filterRecipesNative();
+  filterRecipes();
 
-
-  document.querySelector("#main-search").addEventListener("input", filterRecipesNative);
+  document.querySelector("#main-search").addEventListener("input", filterRecipes);
   document.querySelector("#appareil-filter-input").addEventListener("input", () => filterOptions('appareil'));
   document.querySelector("#ustensiles-filter-input").addEventListener("input", () => filterOptions('ustensiles'));
   document.querySelector("#ingredients-filter-input").addEventListener("input", () => filterOptions('ingredients'));
