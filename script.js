@@ -84,7 +84,7 @@ const updateFilters = () => {
 };
 
 // Fonction de filtrage natif
-const filterRecipes = () => {
+const filterRecipesNative = () => {
   updateFilters();
   const matchesFilters = [];
   for (let recipe of recipes) {
@@ -94,6 +94,65 @@ const filterRecipes = () => {
     const matchesAppliances = !selectedFilters.appliances.length || selectedFilters.appliances.every(appliance => recipe.appliance.toLowerCase().includes(appliance));
     const matchesUstensils = !selectedFilters.utensils.length || selectedFilters.utensils.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
     const matchesIngredients = !selectedFilters.ingredients.length || selectedFilters.ingredients.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
+
+    if (matchesAppliances && matchesUstensils && matchesIngredients) {
+      matchesFilters.push(recipe);
+    }
+  }
+  displayRecipes(matchesFilters);
+  updateActiveFilters();
+  updateURLParameters();
+};
+
+// Fonction de filtrage linéaire
+const filterRecipesLinear = () => {
+  updateFilters();
+  const matchesFilters = [];
+  for (let recipe of recipes) {
+    const matchesSearch = !selectedFilters.search || recipe.name.toLowerCase().includes(selectedFilters.search) || recipe.description.toLowerCase().includes(selectedFilters.search) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
+    if (!matchesSearch) continue;
+
+    const matchesAppliances = !selectedFilters.appliances.length || selectedFilters.appliances.every(appliance => recipe.appliance.toLowerCase().split(',').includes(appliance));
+    const matchesUstensils = !selectedFilters.utensils.length || selectedFilters.utensils.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
+    const matchesIngredients = !selectedFilters.ingredients.length || selectedFilters.ingredients.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
+
+    if (matchesAppliances && matchesUstensils && matchesIngredients) {
+      matchesFilters.push(recipe);
+    }
+  }
+  displayRecipes(matchesFilters);
+  updateActiveFilters();
+  updateURLParameters();
+};
+
+// Fonction de recherche binaire
+const binarySearch = (arr, target) => {
+  let left = 0;
+  let right = arr.length - 1;
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) return true;
+    if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return false;
+};
+
+// Fonction de filtrage binaire
+const filterRecipesBinary = () => {
+  updateFilters();
+  const matchesFilters = [];
+  for (let recipe of recipes) {
+    const matchesSearch = !selectedFilters.search || recipe.name.toLowerCase().includes(selectedFilters.search) || recipe.description.toLowerCase().includes(selectedFilters.search) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
+    if (!matchesSearch) continue;
+
+    const sortedAppliances = recipe.appliance.toLowerCase().split(',').sort();
+    const sortedUstensils = recipe.ustensils.map(u => u.toLowerCase()).sort();
+    const sortedIngredients = recipe.ingredients.map(i => i.ingredient.toLowerCase()).sort();
+
+    const matchesAppliances = !selectedFilters.appliances.length || selectedFilters.appliances.every(appliance => binarySearch(sortedAppliances, appliance));
+    const matchesUstensils = !selectedFilters.utensils.length || selectedFilters.utensils.every(ustensil => binarySearch(sortedUstensils, ustensil));
+    const matchesIngredients = !selectedFilters.ingredients.length || selectedFilters.ingredients.every(ingredient => binarySearch(sortedIngredients, ingredient));
 
     if (matchesAppliances && matchesUstensils && matchesIngredients) {
       matchesFilters.push(recipe);
@@ -162,7 +221,13 @@ const populateFilterOptions = (selector, items) => {
     option.textContent = item;
     option.addEventListener('click', () => {
       option.classList.toggle('selected');
-      filterRecipes(); 
+      if (selector === "#ingredients-filter") {
+        filterRecipesNative();
+      } else if (selector === "#appareil-filter") {
+        filterRecipesLinear();
+      } else if (selector === "#ustensiles-filter") {
+        filterRecipesBinary();
+      }
     });
     filterElement.appendChild(option);
   });
@@ -189,11 +254,10 @@ const updateActiveFilters = () => {
           removeButton.appendChild(img);
           
           removeButton.addEventListener("click", () => {
-            console.log("J'ai cliqué");
-
+            console.log(`J'ai cliqué sur ${key} ${value}`);
             selectedFilters[key] = selectedFilters[key].filter(v => v !== value);
+            console.log("Selected Filters Updated after removal:", selectedFilters);
 
-            // Mettre à jour les options sélectionnées dans le dropdown
             const filterElement = document.querySelector(`#${key}-filter`);
             if (filterElement) {
               const selectedOption = Array.from(filterElement.querySelectorAll('.filter__option')).find(option => option.dataset.value.toLowerCase() === value.toLowerCase());
@@ -202,7 +266,13 @@ const updateActiveFilters = () => {
               }
             }
 
-            filterRecipes();
+            if (key === "ingredients") {
+              filterRecipesNative();
+            } else if (key === "appliances") {
+              filterRecipesLinear();
+            } else if (key === "utensils") {
+              filterRecipesBinary();
+            }
           });
 
           filterTag.appendChild(removeButton);
@@ -225,8 +295,8 @@ const updateActiveFilters = () => {
         removeButton.addEventListener("click", () => {
           if (key === "search") document.querySelector("#main-search").value = "";
           selectedFilters[key] = "";
-
-          filterRecipes();
+          console.log("Selected Filters Updated:", selectedFilters);
+          filterRecipesNative(); // Change this to the desired filter function
         });
 
         filterTag.appendChild(removeButton);
@@ -234,7 +304,6 @@ const updateActiveFilters = () => {
       }
     }
   });
-  console.log("Active Filters Updated:", selectedFilters);
 };
 
 // Fonction pour mettre à jour les paramètres de l'URL en fonction des filtres
@@ -300,9 +369,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   selectedFilters.ingredients = urlParams.ingredients;
 
-  filterRecipes();
+  filterRecipesNative();
 
-  document.querySelector("#main-search").addEventListener("input", filterRecipes);
+  document.querySelector("#main-search").addEventListener("input", filterRecipesNative);
   document.querySelector("#appareil-filter-input").addEventListener("input", () => filterOptions('appareil'));
   document.querySelector("#ustensiles-filter-input").addEventListener("input", () => filterOptions('ustensiles'));
   document.querySelector("#ingredients-filter-input").addEventListener("input", () => filterOptions('ingredients'));
