@@ -69,36 +69,31 @@ const getURLParameters = () => {
   };
 };
 
-// Fonction pour mettre à jour les filtres
-const updateFilters = () => {
-  const searchValue = document.querySelector("#main-search").value.toLowerCase();
-  const applianceSelected = Array.from(document.querySelectorAll("#appareil-filter .selected")).map(option => option.dataset.value.toLowerCase());
-  const utensilsSelected = Array.from(document.querySelectorAll("#ustensiles-filter .selected")).map(option => option.dataset.value.toLowerCase());
-  const ingredientsSelected = Array.from(document.querySelectorAll("#ingredients-filter .selected")).map(option => option.dataset.value.toLowerCase());
 
-  selectedFilters.search = searchValue;
-  selectedFilters.appliances = applianceSelected;
-  selectedFilters.utensils = utensilsSelected;
-  selectedFilters.ingredients = ingredientsSelected;
-  console.log("Selected Filters Updated:", selectedFilters);
-};
 
 // Fonction de filtrage natif
 const filterRecipesNative = () => {
-  updateFilters();
+
+  console.log(selectedFilters)
+
   const matchesFilters = [];
+
   for (let recipe of recipes) {
     const matchesSearch = !selectedFilters.search || recipe.name.toLowerCase().includes(selectedFilters.search) || recipe.description.toLowerCase().includes(selectedFilters.search) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
+    
     if (!matchesSearch) continue;
 
     const matchesAppliances = !selectedFilters.appliances.length || selectedFilters.appliances.every(appliance => recipe.appliance.toLowerCase().includes(appliance));
+
     const matchesUstensils = !selectedFilters.utensils.length || selectedFilters.utensils.every(ustensil => recipe.ustensils.map(u => u.toLowerCase()).includes(ustensil));
+
     const matchesIngredients = !selectedFilters.ingredients.length || selectedFilters.ingredients.every(ingredient => recipe.ingredients.map(i => i.ingredient.toLowerCase()).includes(ingredient));
 
     if (matchesAppliances && matchesUstensils && matchesIngredients) {
       matchesFilters.push(recipe);
     }
   }
+
   displayRecipes(matchesFilters);
   updateActiveFilters();
   updateURLParameters();
@@ -106,7 +101,6 @@ const filterRecipesNative = () => {
 
 // Fonction de filtrage linéaire
 const filterRecipesLinear = () => {
-  updateFilters();
   const matchesFilters = [];
   for (let recipe of recipes) {
     const matchesSearch = !selectedFilters.search || recipe.name.toLowerCase().includes(selectedFilters.search) || recipe.description.toLowerCase().includes(selectedFilters.search) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
@@ -140,7 +134,6 @@ const binarySearch = (arr, target) => {
 
 // Fonction de filtrage binaire
 const filterRecipesBinary = () => {
-  updateFilters();
   const matchesFilters = [];
   for (let recipe of recipes) {
     const matchesSearch = !selectedFilters.search || recipe.name.toLowerCase().includes(selectedFilters.search) || recipe.description.toLowerCase().includes(selectedFilters.search) || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(selectedFilters.search));
@@ -254,9 +247,8 @@ const updateActiveFilters = () => {
           removeButton.appendChild(img);
           
           removeButton.addEventListener("click", () => {
-            console.log(`J'ai cliqué sur ${key} ${value}`);
+
             selectedFilters[key] = selectedFilters[key].filter(v => v !== value);
-            console.log("Selected Filters Updated after removal:", selectedFilters);
 
             const filterElement = document.querySelector(`#${key}-filter`);
             if (filterElement) {
@@ -266,17 +258,15 @@ const updateActiveFilters = () => {
               }
             }
 
-            if (key === "ingredients") {
-              filterRecipesNative();
-            } else if (key === "appliances") {
-              filterRecipesLinear();
-            } else if (key === "utensils") {
-              filterRecipesBinary();
-            }
+
+            filterRecipesNative();
+
+
           });
 
           filterTag.appendChild(removeButton);
           activeFiltersContainer.appendChild(filterTag);
+
         }
       });
     } else {
