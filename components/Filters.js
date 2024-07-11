@@ -86,7 +86,6 @@ import getInfoFromRecipes from "../utils/getInfoFromRecipes.js";
 
 window.handleItemFilterClicked = (key, value) => {
   let currentParams = getFiltersFromURLSearchParams();
-
   let dedupedFilterItem = new Set(currentParams?.[key]);
   const formattedValue = value.trim();
 
@@ -107,7 +106,7 @@ window.handleItemFilterClicked = (key, value) => {
     "?" +
     searchParams.toString();
 
-  window.location.assign(newurl);
+  window.history.pushState({ path: newurl }, '', newurl);
   renderActiveFilters(getFiltersFromURLSearchParams());
 };
 
@@ -132,7 +131,7 @@ window.removeActiveFilter = (key, value) => {
     "?" +
     searchParams.toString();
 
-  window.location.assign(newurl);
+  window.history.pushState({ path: newurl }, '', newurl);
   renderActiveFilters(getFiltersFromURLSearchParams());
 };
 
@@ -169,36 +168,44 @@ const renderActiveFilters = (filters) => {
     activeFiltersContainer.innerHTML = '';
 
     Object.keys(filters).forEach((key) => {
-      filters[key].forEach((value) => {
-        const filterElement = document.createElement('div');
-        filterElement.className = 'active-filter';
-        filterElement.innerHTML = `
-          <span>${value}</span>
-          <button onClick="removeActiveFilter('${key}', '${value}')">×</button>
-        `;
-        activeFiltersContainer.appendChild(filterElement);
+      const filterValues = Array.isArray(filters[key]) ? filters[key] : [filters[key]];
+      filterValues.forEach((value) => {
+        if (value.trim() !== '') { // Assurez-vous que le filtre n'est pas vide
+          const filterElement = document.createElement('div');
+          filterElement.className = 'active-filter';
+          filterElement.innerHTML = `
+            ${value}
+            <button onClick="removeActiveFilter('${key}', '${value}')">×</button>
+          `;
+          activeFiltersContainer.appendChild(filterElement);
+        }
       });
     });
   }
+
+  // Marquer les éléments sélectionnés dans les filtres
+  document.querySelectorAll('.filter__option.selected').forEach(option => option.classList.remove('selected'));
+  Object.keys(filters).forEach((key) => {
+    const filterValues = Array.isArray(filters[key]) ? filters[key] : [filters[key]];
+    filterValues.forEach((value) => {
+      document.querySelectorAll(`.filter__option`).forEach(option => {
+        if (option.textContent.trim() === value) {
+          option.classList.add('selected');
+        }
+      });
+    });
+  });
 };
 
-window.markAsSelected = (key, value) => {
-  const selectedItems = new Set(getFiltersFromURLSearchParams()?.[key]);
-  const formattedValue = value.trim();
-
-  document.querySelectorAll(`.filter__option`).forEach((span) => {
-    if (span.textContent.trim() === formattedValue) {
-      if (selectedItems.has(formattedValue)) {
-        span.classList.add('selected');
-      } else {
-        span.classList.remove('selected');
-      }
-    }
-  });
+window.markAsSelected = (event) => {
+  const span = event.currentTarget;
+  span.classList.toggle('selected');
 };
 
 export const Filter = (nom, items, options = {}) => {
   const currentFilters = getFiltersFromURLSearchParams();
+  const selectedItems = new Set(currentFilters[options.key] || []);
+
   return `  
     <div class="filter">
       <div class="filter-choice">
@@ -207,26 +214,24 @@ export const Filter = (nom, items, options = {}) => {
           <div class="filter__arrow"></div>
         </label>
         <div class="wrapper__filter--input">
-            <input type="text" class="filter__input" placeholder="" oninput="filterList(event)" />
+            <input type="text" class="filter__input" placeholder="Search..." oninput="filterList(event)" />
             <div class="filter__list-items">
             ${items
-              .map((item) => {
-                const selectedClass = currentFilters?.[options.key]?.includes(item) ? 'selected' : '';
-                return `<span class="filter__option ${selectedClass}" onClick="handleItemFilterClicked('${options.key}', '${item}'); markAsSelected('${options.key}', '${item}');">${item}</span>`;
-              })
+              .map(
+                (item) =>
+                  `<span class="filter__option${selectedItems.has(item) ? ' selected' : ''}" onClick="handleItemFilterClicked('${options.key}', '${item}'); markAsSelected(event);">${item}</span>`
+              )
               .join("")}
             </div>
         </div>
       </div>
     </div>
-    `;
+  `;
 };
 
 export const Filters = (recipes) => {
   const count = recipes.length;
-
   const infos = getInfoFromRecipes(recipes);
-  const currentFilters = getFiltersFromURLSearchParams();
 
   return `
       <div class="filters-wrapper">
@@ -244,21 +249,15 @@ export const Filters = (recipes) => {
         <div id="recipes-count" class="filters__count">${count} recettes</div>
       </div>
       <div id="active-filters" class="filters__active"></div>
-    `;
+  `;
 };
 
 export default Filters;
 
-// Assurez-vous que renderActiveFilters est appelé après que le DOM soit mis à jour
 document.addEventListener("DOMContentLoaded", () => {
   const currentFilters = getFiltersFromURLSearchParams();
   renderActiveFilters(currentFilters);
-  // Mark selected filters
-  Object.keys(currentFilters).forEach((key) => {
-    currentFilters[key].forEach((value) => {
-      markAsSelected(key, value);
-    });
-  });
 });
+
 
       // <div id="recipes-container" class="filters__recipes"></div>

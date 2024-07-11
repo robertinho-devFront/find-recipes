@@ -88,6 +88,7 @@ header h1 {
   height: 300px;
   background-color: white;
   width: 100%;
+  border-radius: 0 0 11px 11px;
 }
 .filter {
   width: 226px;
@@ -1093,15 +1094,6 @@ main {
 }
 
 /* Styles pour les filtres actifs */
-.active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-  width: 100%;
-  max-width: 1024px;
-}
-
 .active-filter {
   background-color: #ffd15b;
   color: black;
@@ -1110,9 +1102,9 @@ main {
   display: flex;
   align-items: center;
   height: 37px;
+  padding: 9px 16px;
   font-weight: bolder;
-  justify-content: space-between;
-  box-sizing: border-box;
+  margin: 5px;
 }
 
 .active-filter button {
@@ -1121,6 +1113,13 @@ main {
   color: black;
   margin-left: 10px;
   cursor: pointer;
-  font-size: 16px;
-  line-height: 1;
+}
+
+.filter__option.selected {
+  background-color: #ffd15b;
+  font-weight: bolder;
+  background-image: url("assets/img/cruz.png");
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  background-size: 17px;
 }
