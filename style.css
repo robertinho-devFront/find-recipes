@@ -50,7 +50,7 @@ header h1 {
   height: 52px;
   outline: none;
   background-color: white !important;
-  color: #7A7A7A;
+  color: #7a7a7a;
   font-family: "Manrope", sans-serif;
 }
 
@@ -69,15 +69,26 @@ header h1 {
   max-width: 1240px;
   justify-content: flex-start;
   margin: 0px auto 20px;
-  width: 100%;
 }
+.wrapper__filter--input{
+  width: 100%;
+  background-color: white;
+  /* padding: 0 20px 0px; */
+  border-radius: 0 0 11px 11px;
 
+}
 .filters {
   display: flex;
   flex-direction: row;
-
 }
-
+.filter__list-items {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 300px;
+  background-color: white;
+  width: 100%;
+}
 .filter {
   width: 226px;
   background-color: #ffffff;
@@ -87,9 +98,47 @@ header h1 {
   align-items: center;
   margin-right: 60px;
   height: 56px;
-  justify-content: center;
-  padding: 0 16px;
+  justify-content: flex-start;
+  /* padding: 0 20px; */
 }
+.filter__input{
+  margin: 20px 0px 10px 19px;
+  height: 36px;
+  width: 100%;
+  border: 1px solid #c6c6c6;
+  background-image: url(assets/img/loup.png);
+  background-repeat: no-repeat;
+  background-position: 96% 50%;
+  background-size: 17px;
+  color: #7a7a7a;
+  outline: none;
+  font-size: 14px;
+  max-width: 183px;
+}
+.filter-input{
+
+}
+
+.filter__arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.filter__arrow.rotated {
+  transform: rotate(45deg);
+}
+
+.wrapper__filter--input {
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.wrapper__filter--input.visible {
+  display: block;
+  /* padding: 0 20px; */
+  box-sizing: border-box;
+}
+
 
 .filter__select {
   padding: 10px;
@@ -107,8 +156,9 @@ header h1 {
   padding: 10px;
   font-family: "Manrope", sans-serif;
   font-size: 14px;
-  padding-left: 21px;
+  padding-left: 20px;
   cursor: pointer;
+  display: block;
 }
 
 .filter__option.selected {
@@ -123,7 +173,7 @@ header h1 {
 
 .filter__option:hover {
   background-color: #ffd15b;
-  transition: background-color ease-in-out .33s;
+  transition: background-color ease-in-out 0.33s;
 }
 
 main {
@@ -218,7 +268,7 @@ main {
   font-size: 14px;
   line-height: 1.5;
   font-family: "Manrope", sans-serif;
-  color: #1B1B1B;
+  color: #1b1b1b;
   font-weight: 400;
 }
 
@@ -302,6 +352,13 @@ main {
 .hidden {
   display: none;
 }
+.filter-choice{
+  background-color: white;
+  height: 56px;
+  width: 100%;  border-radius: 11px;
+  padding: 15px 0 0 ;
+
+}
 
 .filter label {
   cursor: pointer;
@@ -313,6 +370,10 @@ main {
   font-size: 16px;
   color: black;
   background-color: white;
+  border-radius: 11px ;
+  padding: 0px 20px 0;
+  box-sizing: border-box;
+  align-items: center;
 }
 
 .filter__dropdown {
@@ -375,15 +436,15 @@ option:hover {
   font-weight: bolder;
   width: 226px;
   justify-content: space-between;
-
+  box-sizing: border-box;
 }
-
 
 .active-filter button {
   background: none;
   border: none;
   color: black;
   margin-left: 10px;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -495,10 +556,7 @@ p.times-recipe {
   margin: 20px auto;
   align-items: center;
   height: 48px;
-
 }
-
-
 
 .filter__dropdown {
   background-color: #ffffff;
@@ -507,21 +565,10 @@ p.times-recipe {
   position: absolute;
   top: 44px;
   max-width: 257px;
-
 }
 
 #ingredients-filter-input {
-  margin-bottom: 24px;
-  margin-left: 16px;
-  height: 36px;
-  width: 86%;
-  border: 1px solid #c6c6c6;
-  background-image: url("assets/img/loup.png");
-  background-repeat: no-repeat;
-  background-position: 96% 50%;
-  background-size: 17px;
-  color: #7A7A7A;
-  outline: none;font-size: 14px;
+  
 }
 
 #appareil-filter-input {
@@ -534,8 +581,9 @@ p.times-recipe {
   background-repeat: no-repeat;
   background-position: 96% 50%;
   background-size: 17px;
-  color: #7A7A7A;
-  outline: none;font-size: 14px;
+  color: #7a7a7a;
+  outline: none;
+  font-size: 14px;
 }
 
 #ustensiles-filter-input {
@@ -548,8 +596,9 @@ p.times-recipe {
   background-repeat: no-repeat;
   background-position: 96% 50%;
   background-size: 17px;
-  color: #7A7A7A;
-  outline: none;font-size: 14px;
+  color: #7a7a7a;
+  outline: none;
+  font-size: 14px;
 }
 
 #ingredients-filter {
@@ -595,13 +644,437 @@ p.times-recipe {
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
-  transform: rotate(45deg);
+  transform: rotate(224deg);
+  width: 6px;
+  height: 6px;
+  margin-top: 10px;
+}
+
+
+
+.subtitle__page {
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 66.24px;
+  align-items: center;
+  font-family: "Anton", sans-serif;
+  color: #ffd15b;
+  margin: 160px auto 20px;
+  max-width: 708px;
+}
+
+.title__logo {
+  padding: 0 0;
+}
+
+
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #333;
+  background-image: url("assets/img/welcome.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  padding: 40px 60px;
+  text-align: center;
+  flex-direction: column;
+  min-height: 666px;
+}
+
+.header-content {
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+header h1 {
+  text-align: left;
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  margin: 0 auto 160px;
+  max-width: 1024px;
+  width: 100%;
+}
+
+.search-container input {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 40px;
+  width: 100%;
+  max-width: 954px;
+  height: 52px;
+  outline: none;
+  background-color: white !important;
+  color: #7a7a7a;
+  font-family: "Manrope", sans-serif;
+}
+
+.search-container button {
+  padding: 10px;
+  background: #333;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+#active-filters {
+  display: flex;
+  gap: 60px;
+  max-width: 1240px;
+  justify-content: flex-start;
+  margin: 0px auto 20px;
+}
+
+.wrapper__filter--input {
+  width: 100%;
+  background-color: white;
+  border-radius: 0 0 11px 11px;
+}
+
+.filters {
+  display: flex;
+  flex-direction: row;
+}
+
+.filter__list-items {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 300px;
+  background-color: white;
+  width: 100%;
+}
+
+.filter {
+  width: 226px;
+  background-color: #ffffff;
+  border-radius: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 60px;
+  height: 56px;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.filter__input {
+  margin: 20px 0px 10px 19px;
+  height: 36px;
+  width: 100%;
+  border: 1px solid #c6c6c6;
+  background-image: url(assets/img/loup.png);
+  background-repeat: no-repeat;
+  background-position: 96% 50%;
+  background-size: 17px;
+  color: #7a7a7a;
+  outline: none;
+  font-size: 14px;
+  max-width: 183px;
+}
+
+.filter__arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  padding: 3px;
+  transform: rotate(224deg);
   width: 6px;
   height: 6px;
 }
 
-.filter__arrow--up {
-  transform: rotate(-135deg);
+.filter__arrow.rotated {
+  transform: rotate(45deg);
+}
+
+.wrapper__filter--input {
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.wrapper__filter--input.visible {
+  display: block;
+  box-sizing: border-box;
+}
+
+.filter__option {
+  padding: 10px;
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  padding-left: 21px;
+  cursor: pointer;
+}
+
+.filter__option:hover {
+  background-color: #ffd15b;
+  transition: background-color ease-in-out 0.33s;
+}
+
+.filter__option.selected {
+  background-color: #ffd15b;
+  font-weight: bolder;
+  background-image: url("assets/img/cruz.png");
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  background-size: 17px;
+}
+
+.active-filter {
+  background-color: #ffd15b;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  height: 37px;
+  padding: 9px 16px;
+  font-weight: bolder;
+  width: 226px;
+  justify-content: space-between;
+}
+
+.active-filter button {
+  background: none;
+  border: none;
+  color: black;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+main {
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #e5e5e5;
+}
+
+.recipe-card {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 22px;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  margin: 0px;
+  padding: 0px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.recipe-card__details {
+  padding: 30px 20px 20px;
+}
+
+.recipe-details {
+  padding: 30px 20px;
+  height: 466px;
+}
+
+.recipe-card__description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  /* Limite le texte à 4 lignes */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recipe-card__description strong {
+  text-transform: uppercase;
+  color: #7a7a7a;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.recipe-card__ingredients strong {
+  text-transform: uppercase;
+  color: #7a7a7a;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.recipe-details p {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-size: 14px;
+  line-height: normal;
+  font-style: normal;
+  margin: 0 0;
+}
+
+.recipe-details p strong {
+  color: #7a7a7a;
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  margin-bottom: 15px;
+}
+
+.recipe-card img {
+  width: 100%;
+  max-height: 200px;
+  border-radius: 22px 22px 0 0;
+  object-fit: cover;
+}
+
+.recipe-card h2 {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.recipe-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: "Manrope", sans-serif;
+  color: #1b1b1b;
+  font-weight: 400;
+}
+
+.recipe-card .tags {
+  margin-top: 10px;
+}
+
+.recipe-card__time {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  background-color: #ffd15b;
+  border-radius: 14px;
+  color: #1b1b1b;
+  font-family: "Manrope", sans-serif;
+  font-weight: lighter;
+  padding: 0 15px;
+}
+
+.recipe-card .tags span {
+  display: inline-block;
+  background: #ff9900;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.recipe-card__list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.recipe-card__list-item {
+  width: 50%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.recipe-card__list-item span {
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 19.12px;
+  color: #1b1b1b;
+}
+
+.recipe-card__list-item .ingredient {
+  font-family: "Manrope", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19.12px;
+  color: #7a7a7a;
+}
+
+#recipes-count {
+  align-items: center;
+  display: flex;
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  font-style: normal;
+}
+
+#recipes-container {
+  width: 100%;
+  max-width: 1240px;
+  gap: 40px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 0 auto 160px;
+}
+
+.hidden {
+  display: none;
+}
+
+.filter-choice {
+  background-color: white;
+  height: 56px;
+  width: 100%;
+  border-radius: 11px;
+  padding: 15px 0 0;
+}
+
+.filter label {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: black;
+  background-color: white;
+  border-radius: 11px;
+  padding: 0px 20px 0;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.filter__dropdown {
+  z-index: 4;
+  background-color: white;
+  border-radius: 0 0 11px 11px;
+  padding: 0 0 12px;
+  display: none;
+}
+
+.filter__dropdown--active {
+  display: block;
 }
 
 .subtitle__page {
@@ -617,4 +1090,37 @@ p.times-recipe {
 
 .title__logo {
   padding: 0 0;
+}
+
+/* Styles pour les filtres actifs */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 1024px;
+}
+
+.active-filter {
+  background-color: #ffd15b;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  height: 37px;
+  font-weight: bolder;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.active-filter button {
+  background: none;
+  border: none;
+  color: black;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
 }
