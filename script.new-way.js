@@ -26,4 +26,3 @@ export const displayPage = (recipes) => {
 
   displayPage(recipesFiltered);
 })();
-
