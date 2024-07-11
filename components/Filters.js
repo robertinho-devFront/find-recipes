@@ -70,6 +70,7 @@ export const Filters = (recipes) => {
             })}
         <div id="recipes-count" class="filters__count">${count} recettes</div>
       </div>
+      </div>
       <div id="active-filters" class="filters__active"></div>
       <div id="recipes-container" class="filters__recipes"></div>
     `;

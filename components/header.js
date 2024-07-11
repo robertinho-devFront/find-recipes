@@ -23,34 +23,19 @@ window.handleSearchSubmitted = () => {
   window.location.assign(newurl);
 };
 
-// export const Header = () => {
-//   return `
-//       <header class="header">
-//         <div class="header__content">
-//           <h1 class="title__logo">Les Petits Plats <img src="assets/img/logo.png"></h1>
-//           <h2 class="subtitle__page">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h2>
-//           <div class="search-container">
-//             <input type="text" id="main-search" class="search-container__input" placeholder="Rechercher une recette, un ingrédient, ..."/>
-//             <button type="button" id="search-button" class="search-container__button"><img class="search-container__img" src="assets/img/loupw.png" onClick="handleSearchSubmitted();"></button>
-//           </div>
-//         </div>
-//       </header>
-//     `;
-// };
-
-// export default Header;
 export const Header = () => {
   return `
-    <header class="header">
-      <div class="header__content">
-        <h1 class="title__logo">Les Petits Plats <img src="assets/img/logo.png"></h1>
-        <h2 class="subtitle__page">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h2>
-        <div class="search-container">
-          <input type="text" id="main-search" class="search-container__input" placeholder="Rechercher une recette, un ingrédient, ..." />
-          <button type="button" id="search-button" class="search-container__button"><img class="search-container__img" src="assets/img/loupw.png"></button>
+      <header class="header">
+        <div class="header__content">
+          <h1 class="title__logo">Les Petits Plats <img src="assets/img/logo.png"></h1>
+          <h2 class="subtitle__page">CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET DÉLICIEUSES</h2>
+          <div class="search-container">
+            <input type="text" id="main-search" class="search-container__input" placeholder="Rechercher une recette, un ingrédient, ..."/>
+            <button type="button" id="search-button" class="search-container__button"><img class="search-container__img" src="assets/img/loupw.png" onClick="handleSearchSubmitted();"></button>
+          </div>
         </div>
-      </div>
-    </header>
-  `;
+      </header>
+    `;
 };
+
 export default Header;

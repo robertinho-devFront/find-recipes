@@ -69,3 +69,4 @@ const filterRecipesBinary = (recipes) => {
 export const filterRecipes = filterRecipesNative;
 
 export default filterRecipes;
+
