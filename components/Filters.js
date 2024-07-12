@@ -108,11 +108,11 @@ window.handleItemFilterClicked = (key, value) => {
 
   window.history.pushState({ path: newurl }, '', newurl);
   renderActiveFilters(getFiltersFromURLSearchParams());
+  window.dispatchEvent(new Event('popstate'));
 };
 
 window.removeActiveFilter = (key, value) => {
   let currentParams = getFiltersFromURLSearchParams();
-
   let dedupedFilterItem = new Set(currentParams?.[key]);
   const formattedValue = value.trim();
 
@@ -133,6 +133,7 @@ window.removeActiveFilter = (key, value) => {
 
   window.history.pushState({ path: newurl }, '', newurl);
   renderActiveFilters(getFiltersFromURLSearchParams());
+  window.dispatchEvent(new Event('popstate'));
 };
 
 window.toggleFilterInput = (event) => {
@@ -170,7 +171,7 @@ const renderActiveFilters = (filters) => {
     Object.keys(filters).forEach((key) => {
       const filterValues = Array.isArray(filters[key]) ? filters[key] : [filters[key]];
       filterValues.forEach((value) => {
-        if (value.trim() !== '') { // Assurez-vous que le filtre n'est pas vide
+        if (value.trim() !== '') {
           const filterElement = document.createElement('div');
           filterElement.className = 'active-filter';
           filterElement.innerHTML = `
@@ -195,11 +196,13 @@ const renderActiveFilters = (filters) => {
       });
     });
   });
-};
 
-window.markAsSelected = (event) => {
-  const span = event.currentTarget;
-  span.classList.toggle('selected');
+  // Mise à jour du décompte des recettes
+  const recipesCount = document.getElementById('recipes-count');
+  if (recipesCount) {
+    const recipes = filterRecipes(initialRecipes);
+    recipesCount.innerText = `${recipes.length} recettes`;
+  }
 };
 
 export const Filter = (nom, items, options = {}) => {
