@@ -54,6 +54,7 @@ const Filters = () => {
       <div id="recipes-count" class="filters__count">0 recettes</div>
     </div>
     <div id="active-filters" class="filters__active"></div>
+    
     <div id="recipes-container" class="filters__recipes"></div>
   `;
 };

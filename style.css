@@ -65,7 +65,7 @@ header h1 {
 
 #active-filters {
   display: flex;
-  gap: 60px;
+  gap: 20px;
   max-width: 1240px;
   justify-content: flex-start;
   margin: 0px auto 20px;
@@ -425,7 +425,7 @@ option:hover {
   max-width: 1024px;
 }
 
-.active-filter {
+#active-filter {
   background-color: #ffd15b;
   color: black;
   padding: 5px 10px;
@@ -736,13 +736,7 @@ header h1 {
   margin-right: 8px;
 }
 
-#active-filters {
-  display: flex;
-  gap: 60px;
-  max-width: 1240px;
-  justify-content: flex-start;
-  margin: 0px auto 20px;
-}
+
 
 .wrapper__filter--input {
   width: 100%;

@@ -23,5 +23,6 @@ export const getFiltersFromURLSearchParams = () => {
   };
 };
 
+
 export default getFiltersFromURLSearchParams;
 
