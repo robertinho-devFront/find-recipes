@@ -76,6 +76,8 @@
 //   displayPage(recipesFiltered);
 // })();
 
+
+
 import { getRecipes } from "./api.js";
 
 import Header from "./components/header.js";
@@ -96,9 +98,9 @@ window.removeActiveFilter = (key, value) => {
   }
 
   const searchParams = new URLSearchParams(window.location.search);
-  searchParams.set(key, Array.from(dedupedFilterItem));
+  searchParams.set(key, Array.from(dedupedFilterItem).join(','));
 
-  if (Array.from(dedupedFilterItem).length === 0) {
+  if (key === URL_PARAMS.SEARCH || Array.from(dedupedFilterItem).length === 0) {
     searchParams.delete(key);
   }
 
@@ -116,9 +118,9 @@ window.removeActiveFilter = (key, value) => {
 const ActiveFilters = () => {
   const currentFilters = getFiltersFromURLSearchParams();
 
-  const ingredients = currentFilters[URL_PARAMS.INGREDIENTS] || [];
-  const ustensils = currentFilters[URL_PARAMS.USTENSIL] || [];
-  const tools = currentFilters[URL_PARAMS.TOOLS] || [];
+  const ingredients = currentFilters[URL_PARAMS.INGREDIENTS];
+  const ustensils = currentFilters[URL_PARAMS.USTENSIL];
+  const tools = currentFilters[URL_PARAMS.TOOLS];
   const search = currentFilters[URL_PARAMS.SEARCH];
 
   const createFilterTag = (key, value) => `
@@ -151,8 +153,6 @@ export const displayPage = (recipes) => {
         ${recipes.map((recipe) => RecipeCard(recipe)).join("")}
       </section>
   `;
-
-  renderActiveFilters(getFiltersFromURLSearchParams());
 };
 
 (async () => {
@@ -161,4 +161,3 @@ export const displayPage = (recipes) => {
 
   displayPage(recipesFiltered);
 })();
-

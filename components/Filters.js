@@ -131,7 +131,12 @@ window.handleItemFilterClicked = (key, value) => {
   }
 
   const searchParams = new URLSearchParams(window.location.search);
-  searchParams.set(key, Array.from(dedupedFilterItem).join(','));
+
+  if (key === URL_PARAMS.SEARCH) {
+    searchParams.set(key, formattedValue);
+  } else {
+    searchParams.set(key, Array.from(dedupedFilterItem).join(','));
+  }
 
   const newurl =
     window.location.protocol +
@@ -154,10 +159,11 @@ window.removeActiveFilter = (key, value) => {
   }
 
   const searchParams = new URLSearchParams(window.location.search);
-  searchParams.set(key, Array.from(dedupedFilterItem).join(','));
 
-  if (Array.from(dedupedFilterItem).length === 0) {
+  if (key === URL_PARAMS.SEARCH) {
     searchParams.delete(key);
+  } else {
+    searchParams.set(key, Array.from(dedupedFilterItem).join(','));
   }
 
   const newurl =
@@ -276,11 +282,9 @@ const Filters = (recipes) => {
         </div>
         <div id="recipes-count" class="filters__count">${count} recettes</div>
       </div>
-      
   `;
 };
 
 export { Filters, renderActiveFilters };
 export default Filters;
-
 
