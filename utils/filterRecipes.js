@@ -59,39 +59,59 @@ const filterRecipesLinear = (recipes) => {
   const matchesFilters = [];
 
   for (let recipe of recipes) {
-    const matchesSearch =
-      !params[URL_PARAMS.SEARCH] ||
-      recipe.name.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
-      recipe.description.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
-      recipe.ingredients.some((ingredient) =>
-        ingredient.ingredient.toLowerCase().includes(params[URL_PARAMS.SEARCH])
-      );
+    const matchesSearch = () => {
+      if (!params[URL_PARAMS.SEARCH].length > 0) {
+        return true;
+      }
 
-    const matchesAppliances =
-      !params[URL_PARAMS.TOOLS].length ||
-      params[URL_PARAMS.TOOLS].every((appliance) =>
-        recipe.appliance.toLowerCase().includes(appliance)
+      return (
+        recipe.name.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
+        recipe.description.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
+        recipe.ingredients.some((ingredient) =>
+          ingredient.ingredient
+            .toLowerCase()
+            .includes(params[URL_PARAMS.SEARCH])
+        )
       );
+    };
 
-    const matchesUstensils =
-      !params[URL_PARAMS.USTENSIL].length ||
-      params[URL_PARAMS.USTENSIL].every((ustensil) =>
+    const matchesAppliances = (() => {
+      if (!params[URL_PARAMS.TOOLS].length > 0) {
+        return true;
+      }
+
+      return params[URL_PARAMS.TOOLS].some(
+        (tool) => toCleanValue(tool) === toCleanValue(recipe.appliance)
+      );
+    })();
+
+    const matchesUstensils = (() => {
+      if (!params[URL_PARAMS.USTENSIL].length > 0) {
+        return true;
+      }
+
+      return params[URL_PARAMS.USTENSIL].every((ustensil) =>
         recipe.ustensils.map((u) => u.toLowerCase()).includes(ustensil)
       );
+    })();
 
-    const matchesIngredients =
-      !params[URL_PARAMS.INGREDIENTS].length ||
-      params[URL_PARAMS.INGREDIENTS].every((ingredient) =>
+    const matchesIngredients = (() => {
+      if (!params[URL_PARAMS.INGREDIENTS].length > 0) {
+        return true;
+      }
+
+      return params[URL_PARAMS.INGREDIENTS].every((ingredient) =>
         recipe.ingredients
           .map((i) => i.ingredient.toLowerCase())
           .includes(ingredient)
       );
+    })();
 
     if (
       matchesAppliances &&
+      matchesSearch &&
       matchesUstensils &&
-      matchesIngredients &&
-      matchesSearch
+      matchesIngredients
     ) {
       matchesFilters.push(recipe);
     }
@@ -158,4 +178,4 @@ const filterRecipesBinary = (recipes) => {
 
 export { filterRecipesNative, filterRecipesLinear, filterRecipesBinary };
 
-export default filterRecipesNative;
+export default filterRecipesLinear;
