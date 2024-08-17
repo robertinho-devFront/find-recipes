@@ -5,12 +5,20 @@ import getFiltersFromURLSearchParams, {
 const toCleanValue = (value) => value.trim().toLowerCase();
 
 const filterRecipesNative = (recipes) => {
+  console.log("filterRecipesNative called with recipes:", recipes);
   const params = getFiltersFromURLSearchParams();
+  console.log("Params:", params);
 
   const filterBySearch = (recipe) => {
     if (!params[URL_PARAMS.SEARCH]) return true;
 
     const cleanSearch = toCleanValue(params[URL_PARAMS.SEARCH]);
+    const result = toCleanValue(recipe.name).includes(cleanSearch) ||
+    toCleanValue(recipe.description).includes(cleanSearch) ||
+    recipe.ingredients.some((ingredient) =>
+      toCleanValue(ingredient.ingredient).includes(cleanSearch)
+    );
+  console.log("filterBySearch result for recipe:", recipe.name, result);
 
     return (
       toCleanValue(recipe.name).includes(cleanSearch) ||
@@ -20,6 +28,7 @@ const filterRecipesNative = (recipes) => {
       )
     );
   };
+
 
   const filterByTools = (recipe) => {
     if (params[URL_PARAMS.TOOLS].length === 0) return true;
@@ -54,65 +63,41 @@ const filterRecipesNative = (recipes) => {
     .filter(filterByUstensil);
 };
 
+
 const filterRecipesLinear = (recipes) => {
   const params = getFiltersFromURLSearchParams();
   const matchesFilters = [];
 
   for (let recipe of recipes) {
-    const matchesSearch = () => {
-      if (!params[URL_PARAMS.SEARCH].length > 0) {
-        return true;
-      }
-
-      return (
-        recipe.name.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
-        recipe.description.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
-        recipe.ingredients.some((ingredient) =>
-          ingredient.ingredient
-            .toLowerCase()
-            .includes(params[URL_PARAMS.SEARCH])
-        )
+    const matchesSearch =
+      !params[URL_PARAMS.SEARCH] ||
+      recipe.name.toLowerCase().includes(params[URL_PARAMS.SEARCH].toLowerCase()) ||
+      recipe.description.toLowerCase().includes(params[URL_PARAMS.SEARCH].toLowerCase()) ||
+      recipe.ingredients.some((ingredient) =>
+        ingredient.ingredient.toLowerCase().includes(params[URL_PARAMS.SEARCH].toLowerCase())
       );
-    };
 
-    const matchesAppliances = (() => {
-      if (!params[URL_PARAMS.TOOLS].length > 0) {
-        return true;
-      }
-
-      return params[URL_PARAMS.TOOLS].some(
+    const matchesAppliances =
+      !params[URL_PARAMS.TOOLS].length ||
+      params[URL_PARAMS.TOOLS].some(
         (tool) => toCleanValue(tool) === toCleanValue(recipe.appliance)
       );
-    })();
 
-    const matchesUstensils = (() => {
-      if (!params[URL_PARAMS.USTENSIL].length > 0) {
-        return true;
-      }
-
-      return params[URL_PARAMS.USTENSIL].every((ustensil) =>
-        recipe.ustensils.map((u) => u.toLowerCase()).includes(ustensil)
+    const matchesUstensils =
+      !params[URL_PARAMS.USTENSIL].length ||
+      params[URL_PARAMS.USTENSIL].every((ustensil) =>
+        recipe.ustensils.map((u) => u.toLowerCase()).includes(toCleanValue(ustensil))
       );
-    })();
 
-    const matchesIngredients = (() => {
-      if (!params[URL_PARAMS.INGREDIENTS].length > 0) {
-        return true;
-      }
-
-      return params[URL_PARAMS.INGREDIENTS].every((ingredient) =>
+    const matchesIngredients =
+      !params[URL_PARAMS.INGREDIENTS].length ||
+      params[URL_PARAMS.INGREDIENTS].every((ingredient) =>
         recipe.ingredients
           .map((i) => i.ingredient.toLowerCase())
-          .includes(ingredient)
+          .includes(toCleanValue(ingredient))
       );
-    })();
 
-    if (
-      matchesAppliances &&
-      matchesSearch &&
-      matchesUstensils &&
-      matchesIngredients
-    ) {
+    if (matchesSearch && matchesAppliances && matchesUstensils && matchesIngredients) {
       matchesFilters.push(recipe);
     }
   }
@@ -132,6 +117,7 @@ const binarySearch = (arr, target) => {
   return false;
 };
 
+
 const filterRecipesBinary = (recipes) => {
   const params = getFiltersFromURLSearchParams();
   const matchesFilters = [];
@@ -139,14 +125,14 @@ const filterRecipesBinary = (recipes) => {
   for (let recipe of recipes) {
     const matchesSearch =
       !params[URL_PARAMS.SEARCH] ||
-      recipe.name.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
-      recipe.description.toLowerCase().includes(params[URL_PARAMS.SEARCH]) ||
+      recipe.name.toLowerCase().includes(params[URL_PARAMS.SEARCH].toLowerCase()) ||
+      recipe.description.toLowerCase().includes(params[URL_PARAMS.SEARCH].toLowerCase()) ||
       recipe.ingredients.some((ingredient) =>
-        ingredient.ingredient.toLowerCase().includes(params[URL_PARAMS.SEARCH])
+        ingredient.ingredient.toLowerCase().includes(params[URL_PARAMS.SEARCH].toLowerCase())
       );
     if (!matchesSearch) continue;
 
-    const sortedAppliances = recipe.appliance.toLowerCase().split(",").sort();
+    const sortedAppliances = [recipe.appliance.toLowerCase()].sort();
     const sortedUstensils = recipe.ustensils.map((u) => u.toLowerCase()).sort();
     const sortedIngredients = recipe.ingredients
       .map((i) => i.ingredient.toLowerCase())
@@ -155,17 +141,19 @@ const filterRecipesBinary = (recipes) => {
     const matchesAppliances =
       !params[URL_PARAMS.TOOLS].length ||
       params[URL_PARAMS.TOOLS].every((appliance) =>
-        binarySearch(sortedAppliances, appliance)
+        binarySearch(sortedAppliances, appliance.toLowerCase())
       );
+
     const matchesUstensils =
       !params[URL_PARAMS.USTENSIL].length ||
       params[URL_PARAMS.USTENSIL].every((ustensil) =>
-        binarySearch(sortedUstensils, ustensil)
+        binarySearch(sortedUstensils, ustensil.toLowerCase())
       );
+
     const matchesIngredients =
       !params[URL_PARAMS.INGREDIENTS].length ||
       params[URL_PARAMS.INGREDIENTS].every((ingredient) =>
-        binarySearch(sortedIngredients, ingredient)
+        binarySearch(sortedIngredients, ingredient.toLowerCase())
       );
 
     if (matchesAppliances && matchesUstensils && matchesIngredients) {
@@ -176,6 +164,8 @@ const filterRecipesBinary = (recipes) => {
   return matchesFilters;
 };
 
+
+
 export { filterRecipesNative, filterRecipesLinear, filterRecipesBinary };
 
-export default filterRecipesLinear;
+export default filterRecipesBinary;
