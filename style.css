@@ -16,11 +16,13 @@ header {
   min-height: 666px;
 }
 
-.header-content {
+.header__content {
   background-size: cover;
-  display: flex;
-  justify-content: space-between;
+
   flex-direction: column;
+  max-width: 1240px;
+  width: 100%;
+  margin: auto;
 }
 
 header h1 {
@@ -69,18 +71,22 @@ header h1 {
   max-width: 1240px;
   justify-content: flex-start;
   margin: 0px auto 20px;
+  width: 100%;
 }
-.wrapper__filter--input{
+
+.wrapper__filter--input {
   width: 100%;
   background-color: white;
   /* padding: 0 20px 0px; */
   border-radius: 0 0 11px 11px;
 
 }
+
 .filters {
   display: flex;
   flex-direction: row;
 }
+
 .filter__list-items {
   display: flex;
   flex-direction: column;
@@ -90,6 +96,7 @@ header h1 {
   width: 100%;
   border-radius: 0 0 11px 11px;
 }
+
 .filter {
   width: 226px;
   background-color: #ffffff;
@@ -102,7 +109,8 @@ header h1 {
   justify-content: flex-start;
   /* padding: 0 20px; */
 }
-.filter__input{
+
+.filter__input {
   margin: 20px 0px 10px 19px;
   height: 36px;
   width: 100%;
@@ -116,9 +124,8 @@ header h1 {
   font-size: 14px;
   max-width: 183px;
 }
-.filter-input{
 
-}
+.filter-input {}
 
 .filter__arrow {
   display: inline-block;
@@ -353,11 +360,13 @@ main {
 .hidden {
   display: none;
 }
-.filter-choice{
+
+.filter-choice {
   background-color: white;
   height: 56px;
-  width: 100%;  border-radius: 11px;
-  padding: 15px 0 0 ;
+  width: 100%;
+  border-radius: 11px;
+  padding: 15px 0 0;
 
 }
 
@@ -371,7 +380,7 @@ main {
   font-size: 16px;
   color: black;
   background-color: white;
-  border-radius: 11px ;
+  border-radius: 11px;
   padding: 0px 20px 0;
   box-sizing: border-box;
   align-items: center;
@@ -416,14 +425,7 @@ option:hover {
   background-color: #ffd15b;
 }
 
-.active-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-  width: 100%;
-  max-width: 1024px;
-}
+
 
 #active-filter {
   background-color: #ffd15b;
@@ -445,7 +447,7 @@ option:hover {
   border: none;
   color: black;
   margin-left: 10px;
-  font-size: 16px;
+  font-size: 22px;
   cursor: pointer;
 }
 
@@ -561,14 +563,16 @@ p.times-recipe {
 
 
 /* @todos css */
-@media (max-width: 1024px){
+@media (max-width: 1024px) {
 
-.filters-wrapper {
-  flex-direction: column;
-  height: 300px;
-  align-items: center;
+  .filters-wrapper {
+    flex-direction: column;
+    height: 300px;
+    align-items: center;
+  }
 }
-};
+
+;
 
 
 .filter__dropdown {
@@ -580,9 +584,7 @@ p.times-recipe {
   max-width: 257px;
 }
 
-#ingredients-filter-input {
-  
-}
+#ingredients-filter-input {}
 
 #appareil-filter-input {
   margin-bottom: 24px;
@@ -636,9 +638,7 @@ p.times-recipe {
 }
 
 .arrow-down,
-.arrow-up {
-
-}
+.arrow-up {}
 
 .arrow-down {
   border-top: 10px solid black;
@@ -756,8 +756,9 @@ header h1 {
   display: flex;
   flex-direction: row;
 }
-@media (max-width: 1024px){
-  .filters{
+
+@media (max-width: 1024px) {
+  .filters {
     height: 300px;
     justify-content: center;
     width: 100%;
@@ -768,7 +769,9 @@ header h1 {
 
   }
 
-};
+}
+
+;
 
 .filter__list-items {
   display: flex;
@@ -791,13 +794,16 @@ header h1 {
   justify-content: center;
   box-sizing: border-box;
 }
-@media (max-width: 1024px){
-  .filter{
-     margin-right: 0;
+
+@media (max-width: 1024px) {
+  .filter {
+    margin-right: 0;
 
   }
 
-};
+}
+
+;
 
 .filter__input {
   margin: 20px 0px 10px 19px;
@@ -861,26 +867,10 @@ header h1 {
   background-size: 17px;
 }
 
-.active-filter {
-  background-color: #ffd15b;
-  color: black;
-  padding: 5px 10px;
-  border-radius: 11px;
-  display: flex;
-  align-items: center;
-  height: 37px;
-  padding: 9px 16px;
-  font-weight: bolder;
-  width: 226px;
-  justify-content: space-between;
-}
+
 
 .active-filter button {
-  background: none;
-  border: none;
-  color: black;
-  margin-left: 10px;
-  cursor: pointer;
+  
 }
 
 .hidden {
@@ -1059,12 +1049,15 @@ main {
   flex-wrap: wrap;
   margin: 0 auto 160px;
 }
-@media (max-width: 1024px){
-  #recipes-container{
-justify-content: space-around
+
+@media (max-width: 1024px) {
+  #recipes-container {
+    justify-content: space-around
   }
 
-};
+}
+
+;
 
 .hidden {
   display: none;
@@ -1132,7 +1125,10 @@ justify-content: space-around
   height: 37px;
   padding: 9px 16px;
   font-weight: bolder;
-  margin: 5px;
+  margin: 0;
+  width: 100%;
+  justify-content: space-between;
+  max-width: 196px;
 }
 
 .active-filter button {
