@@ -1,11 +1,12 @@
-export const URL_PARAMS  = {
+// Définition des paramètres URL utilisés pour les filtres
+export const URL_PARAMS = {
   SEARCH: "search",
   TOOLS: "tools",
   USTENSIL: "ustensil",
   INGREDIENTS: "ingredients"
-}
+};
 
-
+// Fonction qui extrait les filtres des paramètres de l'URL
 export const getFiltersFromURLSearchParams = () => {
   const params = new URLSearchParams(window.location.search);
 
@@ -23,6 +24,4 @@ export const getFiltersFromURLSearchParams = () => {
   };
 };
 
-
 export default getFiltersFromURLSearchParams;
-

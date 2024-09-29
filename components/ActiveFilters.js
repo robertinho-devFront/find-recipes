@@ -1,5 +1,6 @@
 import { URL_PARAMS, getFiltersFromURLSearchParams } from "../utils/getFiltersFromURLSearchParams.js";
 
+// Gestion de la suppression des filtres actifs
 window.removeActiveFilter = (key, value) => {
   let currentParams = getFiltersFromURLSearchParams();
   let dedupedFilterItem = new Set(currentParams?.[key]);
@@ -27,6 +28,7 @@ window.removeActiveFilter = (key, value) => {
   window.location.assign(newurl);
 };
 
+// Affichage des filtres actifs
 const ActiveFilters = () => {
   const currentFilters = getFiltersFromURLSearchParams();
 
